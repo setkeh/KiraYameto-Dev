@@ -4,7 +4,7 @@ channels: ["#thesetkehproject"], //"#linuxdistrocommunity"],
 server: "irc.freenode.net",
 botName: "KiraYameto",
 userName: "KiraYameto",
-password: "PASSWORD",
+password: "password",
 secure: true,
 autoRejoin: true,
 autoConnect: true,
@@ -185,13 +185,13 @@ bot.addListener('message', function (from, to, message) {
 
 var msgArray = message.split("\"");
 var msgArray2 = msgArray[1].split(" ");
-bot.say(to, msgArray2.length);
+//bot.say(to, msgArray2.length);
 var url = "https://api.github.com/search/repositories?q=";
 var urlescape = "%20";
 
 for (var i = 0; i < msgArray.length; i++) {
   if ((msgArray[i].match(trigger + "github"))) {
-    if (msgArray2 == "1") {
+    if (msgArray2.length == 1) {
     request({uri: url + msgArray2[1] + "&sort=stars&order=desc", headers: {'User-Agent': 'KiraYameto'}}, function(err, response, body) {
       if (!err && response.statusCode) {
         var results = JSON.parse(body);
@@ -210,18 +210,26 @@ for (var i = 0; i < msgArray.length; i++) {
       };
   });
   }
-  else if (msgArray2 == "2") {
-    request({uri: url + msgArray2[1] + urlescape + msgArray2[2] + "&sort=stars&order=desc", headers: {'User-Agent': 'KiraYameto'}}, function(err, response, body) {
+  else if (msgArray2.length == 2) {
+    request({uri: url + msgArray2[0] + urlescape + msgArray2[1] + "&sort=stars&order=desc", headers: {'User-Agent': 'KiraYameto'}}, function(err, response, body) {
       if (!err && response.statusCode) {
       var results = JSON.parse(body);
+
+      // Testing
+     /* fs.writeFile("json.txt", body + "\n" + url + msgArray2[0] + urlescape + msgArray2[1] + "&sort=stars&order=desc", function(err) {
+         if(err) {
+            console.log(err);
+          } else {
+            bot.say('#thesetkehproject', "The file was saved!");
+    };
+}); */
         bot.say(to, "Top Github Search Result: " + results.items[0].full_name + " - " + results.items[0].url);
         console.log(results.items[0].full_name);
-        bot.say(to, msgArray2.length);
+        //bot.say(to, msgArray2.length);
       }
-    };
+    }
   )};
 }
 };
-}:
 });
 // End Github Search
