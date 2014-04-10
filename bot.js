@@ -4,7 +4,7 @@ channels: ["#thesetkehproject"], //"#linuxdistrocommunity"],
 server: "irc.freenode.net",
 botName: "KiraYameto",
 userName: "KiraYameto",
-password: "PASWWORD",
+password: "PASSWORD",
 secure: true,
 autoRejoin: true,
 autoConnect: true,
@@ -184,10 +184,15 @@ if (message == trigger + "about") {
 bot.addListener('message', function (from, to, message) { 
 
 var msgArray = message.split("\"");
+var msgArray2 = msgArray[1].split(" ");
+bot.say(to, msgArray2.length);
 var url = "https://api.github.com/search/repositories?q=";
+var urlescape = "%20";
+
 for (var i = 0; i < msgArray.length; i++) {
   if ((msgArray[i].match(trigger + "github"))) {
-    request({uri: url + msgArray[1] + "&sort=stars&order=desc", headers: {'User-Agent': 'KiraYameto'}}, function(err, response, body) {
+    if (msgArray2 == "1") {
+    request({uri: url + msgArray2[1] + "&sort=stars&order=desc", headers: {'User-Agent': 'KiraYameto'}}, function(err, response, body) {
       if (!err && response.statusCode) {
         var results = JSON.parse(body);
        //* testing
@@ -200,9 +205,23 @@ for (var i = 0; i < msgArray.length; i++) {
 }); */
         bot.say(to, "Top Github Search Result: " + results.items[0].full_name + " - " + results.items[0].url);
         console.log(results.items[0].full_name);
+        bot.say(to, msgArray2.length);
+
       };
   });
-  };
+  }
+  else if (msgArray2 == "2") {
+    request({uri: url + msgArray2[1] + urlescape + msgArray2[2] + "&sort=stars&order=desc", headers: {'User-Agent': 'KiraYameto'}}, function(err, response, body) {
+      if (!err && response.statusCode) {
+      var results = JSON.parse(body);
+        bot.say(to, "Top Github Search Result: " + results.items[0].full_name + " - " + results.items[0].url);
+        console.log(results.items[0].full_name);
+        bot.say(to, msgArray2.length);
+      }
+    };
+  )};
+}
 };
+}:
 });
 // End Github Search
