@@ -132,8 +132,7 @@ bot.say( '#thesetkehproject', gitdata.head );
 
 // Start URL Snarfing
 bot.addListener('message', function (from, to, message) {
-var msgArray = message.split(" "); // split on spaces
-     // msgArray now looks like ["some", "text", "with", "a", "http://www.url.com/more/url"]
+var msgArray = message.split(" ");
 var Chan = to
      for (var i = 0; i < msgArray.length; i++) {
       if ((msgArray[i].match(".jpg") || msgArray[i].match(".png") || msgArray[i].match(".gif"))) {
@@ -184,12 +183,10 @@ if (message == trigger + "about") {
 bot.addListener('message', function (from, to, message) { 
   var isquoted = message.split(" ");
   for (var i = 0; i < isquoted.length; i++) {
-    //bot.say(to, isquoted[1]);
     if ((isquoted[i].match(trigger + "github"))) {
     if ((isquoted[1].match("\""))) {
 
 var msgArray = message.split("\"");
-//var msgArray2 = msgArray[1].split(" ");
 var url = "https://api.github.com/search/repositories?q=";
 var urlescape = "%20";
 
@@ -207,10 +204,6 @@ for (var i = 0; i < msgArray.length; i++) {
     }
       else{
         bot.say(to, "Top Github Search Result: " + returnurl);
-       //bot.say(to, "Top Github Search Result: " + results.items[0].full_name + " - " + results.items[0].url);
-        //console.log(results.items[0].full_name);
-        //console.log(returnurl);
-        //bot.say(to, msgArray2.length);
 }
       };
   });
@@ -224,17 +217,12 @@ for (var i = 0; i < msgArray.length; i++) {
     }
     else {
         bot.say(to, "Top Github Search Result: " + returnurl);
-        //bot.say(to, "Top Github Search Result: " + results.items[0].full_name + " - " + results.items[0].url);
-        //console.log(results.items[0].full_name);
       }
       }
     }
   )};
 //}
 };
-/*else {
-  bot.say(to, "Search String Must be Encased in Quotes");
-}*/
 };
 }
 else {
