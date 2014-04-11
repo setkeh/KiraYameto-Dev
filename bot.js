@@ -212,6 +212,7 @@ for (var i = 0; i < msgArray.length; i++) {
     request({uri: url + msgArray2[0] + urlescape + msgArray2[1] + "&sort=stars&order=desc", headers: {'User-Agent': 'KiraYameto'}}, function(err, response, body) {
       if (!err && response.statusCode) {
         var results = JSON.parse(body);
+        var returnurl = "https://github.com/" + results.items[0].full_name + "/";
         if (results.items.length == 0){
           bot.say(to, "Search Returned No Results");
     }
