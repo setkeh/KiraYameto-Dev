@@ -1,10 +1,10 @@
 // Create the configuration
 var config = {
-channels: ["#thesetkehproject"], //"#linuxdistrocommunity"],
+channels: ["#thesetkehproject", "#linuxdistrocommunity"],
 server: "irc.freenode.net",
 botName: "KiraYameto",
 userName: "KiraYameto",
-password: "password",
+password: "Password",
 secure: true,
 autoRejoin: true,
 autoConnect: true,
@@ -182,54 +182,65 @@ if (message == trigger + "about") {
 
 // Start Github Search
 bot.addListener('message', function (from, to, message) { 
+  var isquoted = message.split(" ");
+  for (var i = 0; i < isquoted.length; i++) {
+    //bot.say(to, isquoted[1]);
+    if ((isquoted[i].match(trigger + "github"))) {
+    if ((isquoted[1].match("\""))) {
 
 var msgArray = message.split("\"");
-var msgArray2 = msgArray[1].split(" ");
-//bot.say(to, msgArray2.length);
+//var msgArray2 = msgArray[1].split(" ");
 var url = "https://api.github.com/search/repositories?q=";
 var urlescape = "%20";
 
 for (var i = 0; i < msgArray.length; i++) {
   if ((msgArray[i].match(trigger + "github"))) {
+    var msgArray2 = msgArray[1].split(" ");
     if (msgArray2.length == 1) {
-    request({uri: url + msgArray2[1] + "&sort=stars&order=desc", headers: {'User-Agent': 'KiraYameto'}}, function(err, response, body) {
+    request({uri: url + msgArray[1] + "&sort=stars&order=desc", headers: {'User-Agent': 'KiraYameto'}}, function(err, response, body) {
       if (!err && response.statusCode) {
         var results = JSON.parse(body);
-       //* testing
-     /* fs.writeFile("json.txt", results, function(err) {
-         if(err) {
-            console.log(err);
-          } else {
-            bot.say('#thesetkehproject', "The file was saved!");
-    };
-}); */
-        bot.say(to, "Top Github Search Result: " + results.items[0].full_name + " - " + results.items[0].url);
-        console.log(results.items[0].full_name);
-        bot.say(to, msgArray2.length);
+        var returnurl = "https://github.com/" + results.items[0].full_name + "/";
 
+    if (results.items.length == 0){
+      bot.say(to, "Search Returned No Results");
+    }
+      else{
+        bot.say(to, "Top Github Search Result: " + returnurl);
+       //bot.say(to, "Top Github Search Result: " + results.items[0].full_name + " - " + results.items[0].url);
+        //console.log(results.items[0].full_name);
+        //console.log(returnurl);
+        //bot.say(to, msgArray2.length);
+}
       };
   });
   }
   else if (msgArray2.length == 2) {
     request({uri: url + msgArray2[0] + urlescape + msgArray2[1] + "&sort=stars&order=desc", headers: {'User-Agent': 'KiraYameto'}}, function(err, response, body) {
       if (!err && response.statusCode) {
-      var results = JSON.parse(body);
-
-      // Testing
-     /* fs.writeFile("json.txt", body + "\n" + url + msgArray2[0] + urlescape + msgArray2[1] + "&sort=stars&order=desc", function(err) {
-         if(err) {
-            console.log(err);
-          } else {
-            bot.say('#thesetkehproject', "The file was saved!");
-    };
-}); */
-        bot.say(to, "Top Github Search Result: " + results.items[0].full_name + " - " + results.items[0].url);
-        console.log(results.items[0].full_name);
-        //bot.say(to, msgArray2.length);
+        var results = JSON.parse(body);
+        if (results.items.length == 0){
+          bot.say(to, "Search Returned No Results");
+    }
+    else {
+        bot.say(to, "Top Github Search Result: " + returnurl);
+        //bot.say(to, "Top Github Search Result: " + results.items[0].full_name + " - " + results.items[0].url);
+        //console.log(results.items[0].full_name);
+      }
       }
     }
   )};
-}
+//}
 };
+/*else {
+  bot.say(to, "Search String Must be Encased in Quotes");
+}*/
+};
+}
+else {
+  bot.say(to, "Search Strings Must be Encased in Quotes")
+}
+}
+}
 });
 // End Github Search
