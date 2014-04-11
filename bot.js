@@ -1,10 +1,10 @@
 // Create the configuration
 var config = {
-channels: ["#thesetkehproject", "#linuxdistrocommunity"],
+channels: ["#thesetkehproject"],// "#linuxdistrocommunity"],
 server: "irc.freenode.net",
 botName: "KiraYameto",
 userName: "KiraYameto",
-password: "Password",
+password: "grimhell",
 secure: true,
 autoRejoin: true,
 autoConnect: true,
@@ -135,7 +135,7 @@ bot.addListener('message', function (from, to, message) {
 var msgArray = message.split(" ");
 var Chan = to
      for (var i = 0; i < msgArray.length; i++) {
-      if ((msgArray[i].match(".jpg") || msgArray[i].match(".png") || msgArray[i].match(".gif"))) {
+      if ((msgArray[i].match(".jpg") || msgArray[i].match(".png") || msgArray[i].match("imgur") || msgArray[i].match(".gif"))) {
         console.log(Chan, "Ignoring Image");
       }
       else{
