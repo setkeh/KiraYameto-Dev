@@ -1,15 +1,14 @@
-// KiraYameto
 // Create the configuration
 var config = {
-  channels: ["#thesetkehproject"],// "#linuxdistrocommunity"],
-  server: "irc.freenode.net",
-  botName: "Kernel_Segfault",
-  userName: "Kernel_Segfault",
-  password: "PASSWORD",
-  secure: true,
-  autoRejoin: true,
-  autoConnect: true,
-  realName: "BallmerPeak's Pet"
+channels: ["#thesetkehproject", "#linuxdistrocommunity"],
+server: "irc.freenode.net",
+botName: "KiraYameto",
+userName: "KiraYameto",
+password: "Password",
+secure: true,
+autoRejoin: true,
+autoConnect: true,
+realName: "LDC ADMIN BOT"
 };
 
 // Get the libs
