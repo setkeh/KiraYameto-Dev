@@ -1,3 +1,4 @@
+// KiraYameto
 // Create the configuration
 var config = {
   channels: ["#thesetkehproject"],// "#linuxdistrocommunity"],
