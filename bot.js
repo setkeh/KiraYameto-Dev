@@ -19,9 +19,9 @@ var fs =  require("fs"); //Used for Parsing Large Json for output purposes and l
 var github = require('octonode');
 
 // Create Global Config Variables
-var trigger = "~";
-var machine = "Hailstorm"; // This is Machine type for example "Dell Poweredge 2650"
-var maintainer = "BallmerPeak"; // Yourname Here.
+var trigger = "!";
+var machine = "RaspberryPi"; // This is Machine type for example "Dell Poweredge 2650"
+var maintainer = "SETKEH"; // Yourname Here.
 
 // Create the bot name
 var bot = new irc.Client(config.server, config.botName, {
@@ -32,6 +32,14 @@ var bot = new irc.Client(config.server, config.botName, {
     autoRejoin: config.autoRejoin,
     password: config.password
   });
+
+// Start Monitoring for Changes to code
+/*
+fs.watch(".", { persistent: true }, function (event, fileName) {
+  console.log("Event: " + event);
+  console.log(fileName + "\n");
+});
+*/
 
 // Use for Dbugging Non Joins.
 //console.log(bot);
