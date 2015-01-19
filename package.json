@@ -13,6 +13,7 @@
     "socket.io": "~0.9.16",
     "irc": "~0.3.6",
     "octonode": "~0.6.2",
+    "internet-relay-chat": "*",
     "request": "2.34.x"
   }
 }

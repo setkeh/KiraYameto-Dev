@@ -4,7 +4,7 @@ channels: ["#thesetkehproject", "#linuxdistrocommunity"],
 server: "irc.freenode.net",
 botName: "KiraYameto",
 userName: "KiraYameto",
-password: "Password",
+password: "PASSWORD",
 secure: true,
 autoRejoin: true,
 autoConnect: true,
@@ -66,9 +66,9 @@ bot.addListener("pm", function(from, to, text, message) {
 });
 
 // Listen for any message, say to him/her in the room
-bot.addListener("message#", function(from, to, text, message) {
+bot.addListener("message", function(from, to, text, message, channel) {
   if (to == config.botName) {
-    bot.say(config.channels[0], "I am not the Droid you're looking for! Move Along Move Along");
+    bot.say(channel, "I am not the Droid you're looking for! Move Along Move Along");
   };
 });
 
@@ -190,7 +190,7 @@ bot.addListener('message', function (from, to, message) {
       bot.say(from, "CPU Speed: " + cpu.speed + "MHz");
       bot.say(from, "CPU Temp: " + (temperature/1000).toPrecision(3) + "°C");
       bot.say(from, "Total Mem: " + os.totalmem() + " Free Mem: " + os.freemem());
-      bot.say(from, "Uptime: " + os.uptime() / 60 / 1000 + " Days");
+      bot.say(from, "Uptime: " + (os.uptime()/60/1000).toPrecision(3) + " Days");
       bot.say(from, "Maintainer: " + maintainer);
     //};
   };
