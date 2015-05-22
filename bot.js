@@ -84,6 +84,14 @@ bot.on('message', function(sender, channel, message) {
   }
 });
 
+//Reverse Command
+bot.on('message', function(sender, channel, message) {
+  if (message == config.trigger + "reverse") {
+    var msgArray = message.split(" ");
+    bot.message(channel, IRC.colors.reverse + msgArray);
+  }
+});
+
 //Start URL Scraping
 bot.on('message', function(sender, channel, message) {
 	var msgArray = message.split(" ");
