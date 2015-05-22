@@ -142,18 +142,25 @@ bot.on("pm", function(sender, message) {
 bot.on('message', function (sender, channel, message) {
   if (message == config.trigger + "about") {
     var cpus = os.cpus();
-    var temperature = fs.readFileSync("/sys/class/thermal/thermal_zone0/temp");
+    if (os.release() == "6.2.9200") {
+      var temperature = "Not Supported by this Operating System";
+      var ops = "Windows 8 Release: " + os.release();
+    } else {
+      var temp = fs.readFileSync("/sys/class/thermal/thermal_zone0/temp");
+      var temperature = (temp/1000).toPrecision(3) + "°C";
+      var ops = os.release();
+    }
     //for(var i = 0, len = cpus.length; i < len; i++) {
       var cpu = cpus[0];
 
       bot.message(channel, sender.nick + " I Have Pm'd You My About Details.");
       bot.message(sender.nick, "Bot Name: " + config.nick);
-      bot.message(sender.nick, "Operating System: " + os.release());
+      bot.message(sender.nick, "Operating System: " + ops);
       bot.message(sender.nick, "Architecture: " + os.arch());
       bot.message(sender.nick, "Machine Type: " + config.machine);
       bot.message(sender.nick, "CPU: " + cpu.model);
       bot.message(sender.nick, "CPU Speed: " + cpu.speed + "MHz");
-      bot.message(sender.nick, "CPU Temp: " + (temperature/1000).toPrecision(3) + "°C");
+      bot.message(sender.nick, "CPU Temp: " + temperature);
       bot.message(sender.nick, "Total Mem: " + (os.totalmem()/1024/1024/1024).toPrecision(4) + "GB Free Mem: " + (os.freemem()/1024/1024/1024).toPrecision(4) + "GB");
       bot.message(sender.nick, "Uptime: " + (os.uptime()/60/1000).toPrecision(3) + " Days");
       bot.message(sender.nick, "Maintainer: " + config.maintainer);
