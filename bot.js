@@ -7,6 +7,7 @@ var github = require('octonode');
 var gith = require('gith').create( 9001 );
 var Docker = require('dockerode');
 var docker = new Docker({host: 'http://192.168.1.120', port: 4243});
+var PASS = fs.readFileSync("services.password");
 
 // Create the configuration
 var config = {
@@ -15,7 +16,7 @@ server: "irc.freenode.net",
 port: "7000",
 username: "KiraYameto",
 nick: "KiraYameto",
-password: "PASSWORD",
+password: PASS,
 autoReconnect: 150,
 floodDelay: 1000,
 secure: true,
@@ -76,7 +77,7 @@ bot.on('message', function(sender, channel, message) {
   }
   if (message == config.trigger + "dockerver") {
     docker.version(function(err, ver) {
-        bot.message(channel, IRC.colors.cyan + "Version: " + IRC.colors.black + ver.Version);
+        bot.message(channel, IRC.colors.cyan + "Docker Version: " + IRC.colors.black + ver.Version);
       });
   }
 });
