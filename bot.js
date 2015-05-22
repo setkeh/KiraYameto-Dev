@@ -78,6 +78,8 @@ bot.on('message', function(sender, channel, message) {
   if (message == config.trigger + "dockerver") {
     docker.version(function(err, ver) {
         bot.message(channel, IRC.colors.cyan + "Docker Version: " + IRC.colors.black + ver.Version);
+        bot.message(channel, IRC.colors.cyan + "Running on: " + IRC.colors.black + ver.Os + " " + ver.KernelVersion + " " + ver.Arch);
+        bot.message(channel, IRC.colors.cyan + "Go Version: " + IRC.colors.black + ver.GoVersion);
       });
   }
 });
