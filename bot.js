@@ -152,14 +152,8 @@ bot.on("pm", function(sender, message) {
 bot.on('message', function (sender, channel, message) {
   if (message == config.trigger + "about") {
     var cpus = os.cpus();
-    if (os.release() == "6.2.9200") {
-      var temperature = IRC.colors.lightRed + "Not Supported by this Operating System";
-      var ops = "Windows 8 Release: " + os.release();
-    } else {
-      var temp = fs.readFileSync("/sys/class/thermal/thermal_zone0/temp");
-      var temperature = IRC.colors.lightGreen + (temp/1000).toPrecision(3) + "°C";
       var ops = os.release();
-    }
+
     //for(var i = 0, len = cpus.length; i < len; i++) {
       var cpu = cpus[0];
 
@@ -170,7 +164,6 @@ bot.on('message', function (sender, channel, message) {
       bot.message(sender.nick, IRC.colors.lightMagenta +"Machine Type: " + IRC.colors.lightGreen + config.machine);
       bot.message(sender.nick, IRC.colors.lightMagenta + "CPU: " + IRC.colors.lightGreen + cpu.model);
       bot.message(sender.nick, IRC.colors.lightMagenta + "CPU Speed: " + IRC.colors.lightGreen + cpu.speed + "MHz");
-      bot.message(sender.nick, IRC.colors.lightMagenta + "CPU Temp: " + temperature);
       bot.message(sender.nick, IRC.colors.lightMagenta + "Total Mem: " + IRC.colors.lightGreen + (os.totalmem()/1024/1024/1024).toPrecision(4) + "GB Free Mem: " + (os.freemem()/1024/1024/1024).toPrecision(4) + "GB");
       bot.message(sender.nick, IRC.colors.lightMagenta + "Uptime: " + IRC.colors.lightGreen + (os.uptime()/60/1000).toPrecision(3) + " Days");
       bot.message(sender.nick, IRC.colors.lightMagenta + "Maintainer: " + IRC.colors.lightGreen + config.maintainer);
@@ -247,6 +240,20 @@ gith({}).on( 'all', function( payload ) {
   bot.message( '#thesetkehproject', gitdata.head );
 });
 // End Github Webhook.
+
+// Make Kira Update himself
+gith({}).on( 'all', function( payload ) {
+var update = require('child_process').fork('git clone');
+
+var gitdata = {
+  title: payload.repo,
+  url: payload.original.repository.url
+}
+
+if ( gitdata.title == "KiraYameto-Dev" ) {
+  update.send(gitdata.url)
+}
+})
 
 process.on('uncaughtException', function (err) {
   console.log("ERROR: " + err);
