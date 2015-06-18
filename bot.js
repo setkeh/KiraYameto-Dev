@@ -1,48 +1,30 @@
 //Import the Libs
 var IRC = require('internet-relay-chat');
+var config = require("./config.json");
 var request = require("request");
 var os = require("os");
 var fs =  require("fs");
 var github = require('octonode');
 var gith = require('gith').create( 9001 );
 var Docker = require('dockerode');
-var docker = new Docker({host: 'http://192.168.1.120', port: 4243});
+var docker = new Docker(config[2].docker[0]);
 var PASS = fs.readFileSync("services.password");
-
-// Create the configuration
-var config = {
-channels: ["#thesetkehproject", "#linuxdistrocommunity"],
-server: "irc.freenode.net",
-port: "7000",
-username: "KiraYameto",
-nick: "KiraYameto",
-password: PASS,
-autoReconnect: 150,
-floodDelay: 1000,
-secure: true,
-autoRejoin: true,
-debug: true,
-vhost: null,
-realname: "LDC ADMIN BOT",
-trigger: "!",
-machine: "RaspberryPi", // This is Machine type for example "Dell Poweredge 2650"
-maintainer: "SETKEH" // Yourname Here.
-};
+var trigger = config[0].irc[0].trigger
 
 //Create the bot instance.
 var bot = new IRC({
-server: config.server,
-username: config.username,
-nick: config.nick,
-password: config.password,
-realname: config.realname,
-port: config.port,
-autoConnect: config.autoConnect,
-floodDelay: config.floodDelay,
-secure: config.secure,
-autoRejoin: config.autoRejoin,
-vhost: config.vhost,
-debug: config.debug
+server: config[0].irc[0].server,
+username: config[0].irc[0].nick,
+nick: config[0].irc[0].nick,
+password: PASS,
+realname: config[0].irc[0].realname,
+port: config[0].irc[0].port,
+autoReconnect: config[0].irc[0].autoReconnect,
+floodDelay: config[0].irc[0].floodDelay,
+secure: config[0].irc[0].secure,
+autoRejoin: config[0].irc[0].autoRejoin,
+vhost: config[0].irc[0].vhost,
+debug: config[0].irc[0].debug
 });
 
 //Inform the Console we're connected.
@@ -55,20 +37,20 @@ bot.connect();
 
 //Once Reg'ed with the Server (Handshake wit IRCD)
 bot.on('registered', function() {
-    bot.join(config.channels[0]);
-    bot.join(config.channels[1]);
+    bot.join(config[0].irc[0].channels[0].ldc);
+    bot.join(config[0].irc[0].channels[0].tskp);
 });
 
 //Start Docker API intergration
 bot.on('message', function(sender, channel, message) {
-  if (message == config.trigger + "listcontainers") {
+  if (message == trigger + "listcontainers") {
     docker.listContainers({all: true}, function(err, containers) {
       for(var i = 0; i < containers.length; i++) {
         bot.message(channel, IRC.colors.cyan + "Name: " + IRC.colors.black + containers[i].Names + IRC.colors.cyan + " Status: " + IRC.colors.black + containers[i].Status);
       }
     });
   }
-  if (message == config.trigger + "listimages") {
+  if (message == trigger + "listimages") {
     docker.listImages({all: false}, function(err, images) {
       for(var i = 0; i < images.length; i++) {
         bot.message(channel, images[i].RepoTags + IRC.colors.cyan + " Size: " + IRC.colors.black + (images[0].VirtualSize/1024/1024).toPrecision(4) + "MB");
@@ -127,7 +109,7 @@ bot.on('message', function(sender, channel, message) {
 // Listen for joins
 bot.on("join", function(user, channel) {
   // Welcome them in!
-  if ((user.nick) != config.nick) {
+  if ((user.nick) != config[0].irc[0].nick) {
     if ((channel) == "#thesetkehproject") {
       bot.message(channel, user.nick + " Duuuuuude Welcome to the " + channel + "!!");
     };
@@ -138,7 +120,7 @@ bot.on("join", function(user, channel) {
 bot.on("message", function(sender, channel, message) {
   msgArray = message.split(" ");
   console.log(msgArray);
-  if (msgArray[0] == config.nick + ":") {
+  if (msgArray[0] == config[0].irc[0].nick + ":") {
     bot.message(channel, sender.nick + ": " + "I am not the Droid you're looking for! Move Along Move Along.");
   };
 });
@@ -150,7 +132,7 @@ bot.on("pm", function(sender, message) {
 
 // Start About Command
 bot.on('message', function (sender, channel, message) {
-  if (message == config.trigger + "about") {
+  if (message == trigger + "about") {
     var cpus = os.cpus();
       var ops = os.release();
 
@@ -158,6 +140,18 @@ bot.on('message', function (sender, channel, message) {
       var cpu = cpus[0];
 
       bot.message(channel, sender.nick + " I Have Pm'd You My About Details.");
+<<<<<<< HEAD
+      bot.message(sender.nick, "Bot Name: " + config[0].irc[0].nick);
+      bot.message(sender.nick, "Operating System: " + os.release());
+      bot.message(sender.nick, "Architecture: " + os.arch());
+      bot.message(sender.nick, "Machine Type: " + config[1].general[0].machine);
+      bot.message(sender.nick, "CPU: " + cpu.model);
+      bot.message(sender.nick, "CPU Speed: " + cpu.speed + "MHz");
+      bot.message(sender.nick, "CPU Temp: " + (temperature/1000).toPrecision(3) + "°C");
+      bot.message(sender.nick, "Total Mem: " + (os.totalmem()/1024/1024/1024).toPrecision(4) + "GB Free Mem: " + (os.freemem()/1024/1024/1024).toPrecision(4) + "GB");
+      bot.message(sender.nick, "Uptime: " + (os.uptime()/60/1000).toPrecision(3) + " Days");
+      bot.message(sender.nick, "Maintainer: " + config[1].general[0].maintainer);
+=======
       bot.message(sender.nick, IRC.colors.lightMagenta + "Bot Name: " + IRC.colors.lightGreen + config.nick);
       bot.message(sender.nick, IRC.colors.lightMagenta + "Operating System: " + IRC.colors.lightGreen + ops);
       bot.message(sender.nick, IRC.colors.lightMagenta + "Architecture: " + IRC.colors.lightGreen + os.arch());
@@ -167,6 +161,7 @@ bot.on('message', function (sender, channel, message) {
       bot.message(sender.nick, IRC.colors.lightMagenta + "Total Mem: " + IRC.colors.lightGreen + (os.totalmem()/1024/1024/1024).toPrecision(4) + "GB Free Mem: " + (os.freemem()/1024/1024/1024).toPrecision(4) + "GB");
       bot.message(sender.nick, IRC.colors.lightMagenta + "Uptime: " + IRC.colors.lightGreen + (os.uptime()/60/1000).toPrecision(3) + " Days");
       bot.message(sender.nick, IRC.colors.lightMagenta + "Maintainer: " + IRC.colors.lightGreen + config.maintainer);
+>>>>>>> 386b0596240a6492a1cbc27d81fa456ee20604cd
     //};
   };
 });

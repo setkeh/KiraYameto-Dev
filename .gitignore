@@ -2,4 +2,8 @@ node_modules/
 sftp-config.json
 DevTest/
 services.password
+<<<<<<< HEAD
+test.js
+=======
 *.swp
+>>>>>>> 386b0596240a6492a1cbc27d81fa456ee20604cd

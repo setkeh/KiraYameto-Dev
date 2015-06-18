@@ -1,4 +1,41 @@
+[
+{ 
+  "irc": [{
+    "nick": "KiraYameto",
+    "trigger": "!",
+    "realname": "TheSetkehProject Automation Bot",
+    "server": "irc.freenode.net",
+    "port": "7000",
+    "channels": [{
+	    "ldc": "#linuxdistrocommunity",
+	    "tskp": "#thesetkehproject"
+    }],
+    "autoReconnect": "150",
+    "autoRejoin": "true",
+    "floodDelay": "1000",
+    "secure": "true",
+    "debug": "true",
+    "vhost": "null"
+  }]
+},
 {
-  "keyID": "3154761", 
-  "vCode": "evefvwldkjcwhc898490n3ei3be0bio34f3f0h7"
+  "general": [{
+    "machine": "HardKernel Odroid U3",
+    "maintainer": "SETKEH"
+  }]
+},
+{
+  "docker": [{
+    "host": "10.0.0.7",
+    "port": "4243"
+  }]
+},
+{
+  "temperature": [{
+    "temp": "/sys/class/thermal/thermal_zone0/temp",
+    "pwm_duty": "/sys/bus/platform/devices/odroidu2-fan/pwm_duty",
+    "start_temp": "/sys/bus/platform/devices/odroidu2-fan/start_temp",
+    "start_duty": "/sys/bus/platform/devices/odroidu2-fan/start_duty"
+  }]
 }
+]
